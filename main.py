@@ -4,7 +4,7 @@ import os, sys, time, json, socket
 from datetime import datetime
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from engine import spam
-from utils import G, C, Y, R, P, W, N
+from junk import G, C, Y, R, P, W, N
 
 HIDDEN = True
 WORKDIR = os.path.expanduser("~/umambo")
