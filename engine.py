@@ -19,7 +19,8 @@ def spam(phone):
         for ch in ["◧", "◨", "◩", "◪", "◫"]:
             sys.stdout.write(f"\r  {P}{ch}{N} Mengirim... ")
             sys.stdout.flush()
-            time.sleep(0.8)
+            time.sleep(0.6)
+        time.sleep(3)
     sys.stdout.write("\r" + " " * 30 + "\r")
     print(f"  {G}✓ Dah tuh, puas?{N}")
     print(f"  {C}{dc}/{len(el)} terkirim{N}")
