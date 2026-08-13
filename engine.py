@@ -57,7 +57,10 @@ def spam(phone):
             status = "?"
             try:
                 import requests as _rr
-                rr = _rr.post(url, json=b, headers=h, timeout=15)
+                if b.pop("is_form", False):
+                    rr = _rr.post(url, data=b, headers=h, timeout=15)
+                else:
+                    rr = _rr.post(url, json=b, headers=h, timeout=15)
                 s = rr.status_code
                 if s in (200, 201, 202):
                     sent.append(name)
