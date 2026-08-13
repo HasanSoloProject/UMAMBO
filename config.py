@@ -31,4 +31,8 @@ def _x(ph):
         ("Morinaga","https://loyalty.morinaga.id/api/bff/v1/notification/sendotp",{"Content-Type":"application/json","Accept":"application/json"},{"UniqueID":_f08(ph),"NotifType":"109104","OtpType":"119103","OtpDigit":6}),
         ("OptikMelawai","https://api.optikmelawai.com/api/v2/auth/register/verify/phone/request",{"Content-Type":"application/json","Accept":"application/json"},{"value":_f62(ph),"provider":"mobile_number"}),
         ("Moladin","https://moladingroup.com/wp-admin/admin-ajax.php",{"Content-Type":"application/x-www-form-urlencoded","Origin":"https://moladingroup.com"},{"action":"user_request_otp","phone_number":_fnocode(ph),"is_form":True}),
+        ("Connectindo","https://www.connectindo.id/api/auth/phone-login/send-otp",{"Content-Type":"application/json","Origin":"https://www.connectindo.id","Referer":"https://www.connectindo.id/login"},{"phone":_f08(ph),"locale":"id"}),
+        ("Staigo","https://api.staigo.id/api/v2/auth/login",{"Content-Type":"application/json","Origin":"https://staigo.id","Referer":"https://staigo.id/login"},{"identifier":_f62(ph)}),
+        ("1itmedia","https://api.1itmedia.co.id/oauth/fa_otp",{"Content-Type":"application/x-www-form-urlencoded"},{"username":_f08(ph),"otp_type":"null","is_form":True}),
+        ("TirtaSiak","https://apiwa.tirtasiakpekanbaru.co.id/siak/generateotp",{"Content-Type":"application/json","Accept":"application/json"},{"telp":_fplus(ph),"id_pt":1,"message":"*Kode OTP*\n\nKode OTP masuk Anda : ??? (berlaku 5 Menit )\nJangan memberikan kode OTP ke pihak lain, karena bersifat rahasia\nJika anda tidak melakukan aktifitas masuk ke Aplikasi *Perumdam Tirta Siak*\nAbaikan Kode OTP ini.\n\nTerimakasih telah menggunakan Aplikasi *Perumdam Tirta Siak*"}),
          ]
