@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""UMAMBO — Open Source OTP Spammer."""
+"""UMAMBO — Premium OTP Spammer."""
 import os, sys, time, json, socket
 from datetime import datetime
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
